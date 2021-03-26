@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <!-- <script src='main.js'></script> -->
+</head>
+<body>
+    Добро пожаловать в {{ title }}. <br>
+    Тут собрано {{ books|length }} книг из моей личной коллекции.
+    <table border="1">
+        {% for book in books %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{book.title}}</td>
+            <td>{{book.ISBN}}</td>
+            <td>{{book.description}}</td>
+            <td>{{book.year_release}}</td>
+            <td>{{book.author.full_name}}</td>
+            <td>{{book.author.country}}</td>
+            <td>{{book.copy_count}}</td>
+            <td>
+                <form action="/index/book_increment/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{book.id}}" />
+                    <input type="submit" value="Увеличить кол-во" />
+                </form>
+                 <form action="/index/book_decrement/" method="post" enctype="multipart/form-data">
+                     {% csrf_token %}
+                    <input type="hidden" name="id" value="{{book.id}}" />
+                    <input type="submit" value="Уменьшить кол-во" />
+                </form>
+            </td>
+      </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
